@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import yalexaner.konturtest.databinding.FragmentMainScreenBinding
-import yalexaner.konturtest.network.models.NetworkContact
+import yalexaner.konturtest.db.CachedContact
 import yalexaner.konturtest.ui.components.contactslist.MyItemRecyclerViewAdapter
 
 /**
@@ -33,11 +33,13 @@ class MainScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         model.contacts.observe(viewLifecycleOwner) { contacts ->
-            handleContactsLoaded(contacts)
+            if (contacts.isNotEmpty()) {
+                handleContactsLoaded(contacts)
+            }
         }
     }
 
-    private fun handleContactsLoaded(contacts: List<NetworkContact>) {
+    private fun handleContactsLoaded(contacts: List<CachedContact>) {
         binding?.contacts?.adapter = MyItemRecyclerViewAdapter(contacts)
         binding?.progress?.visibility = View.GONE
         binding?.contacts?.visibility = View.VISIBLE
