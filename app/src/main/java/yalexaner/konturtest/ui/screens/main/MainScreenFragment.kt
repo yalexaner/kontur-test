@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import yalexaner.konturtest.R
 import yalexaner.konturtest.databinding.FragmentMainScreenBinding
@@ -40,6 +41,10 @@ class MainScreenFragment : Fragment() {
                 handleContactsLoaded(contacts)
             }
         }
+
+        model.requestErrorMessage.observe(viewLifecycleOwner) { message ->
+            showSnackbar(message)
+        }
     }
 
     private fun handleContactsLoaded(contacts: List<CachedContact>) {
@@ -57,6 +62,11 @@ class MainScreenFragment : Fragment() {
             replace(R.id.main_fragment_container, ContactScreenFragment.withArgument(contact))
             addToBackStack(null)
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        val layout = binding?.root ?: return
+        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
