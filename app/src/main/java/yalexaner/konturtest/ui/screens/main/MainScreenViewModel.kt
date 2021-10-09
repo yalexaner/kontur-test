@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import yalexaner.konturtest.base.Schedulers
+import yalexaner.konturtest.data.settings.MainScreenSettings
 import yalexaner.konturtest.db.CachedContact
 import yalexaner.konturtest.db.ContactsDao
 import yalexaner.konturtest.network.models.NetworkContact
@@ -16,14 +16,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    schedulers: Schedulers,
-    mainScreenRepo: MainScreenRepo,
-    private val contactsDao: ContactsDao
+    private val schedulers: Schedulers,
+    private val mainScreenRepo: MainScreenRepo,
+    private val contactsDao: ContactsDao,
+    private val mainScreenSettings: MainScreenSettings
 ) : ViewModel() {
 
     val contacts: LiveData<List<CachedContact>> = contactsDao.getAll().asLiveData()
 
     init {
+        val currentTime = System.currentTimeMillis()
+        val lastSavedTime = mainScreenSettings.lastCachedTimeMillis
+        if (currentTime - lastSavedTime >= MINUTE) {
+            receiveContacts()
+        }
+    }
+
+    private fun receiveContacts() {
         mainScreenRepo.getContacts()
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.main)
@@ -38,6 +47,7 @@ class MainScreenViewModel @Inject constructor(
 
         viewModelScope.launch {
             contactsDao.insert(*cachedContacts.toTypedArray())
+            mainScreenSettings.lastCachedTimeMillis = System.currentTimeMillis()
         }
     }
 
@@ -52,5 +62,9 @@ class MainScreenViewModel @Inject constructor(
             educationPeriodStart = educationPeriod.start,
             educationPeriodEnd = educationPeriod.end
         )
+    }
+
+    companion object {
+        private const val MINUTE = 60 * 1000L
     }
 }
