@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import yalexaner.konturtest.databinding.ItemContactBinding
 import yalexaner.konturtest.db.CachedContact
 
-class MyItemRecyclerViewAdapter(
-    private val contacts: List<CachedContact>
-) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
+class ContactsListAdapter(
+    private val contacts: List<CachedContact>,
+    private val onItemClick: ((CachedContact) -> Unit)? = null
+) : RecyclerView.Adapter<ContactsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -16,7 +17,11 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.contact = contacts[position]
+        val item = contacts[position]
+        holder.binding.apply {
+            contact = item
+            root.setOnClickListener { onItemClick?.invoke(item) }
+        }
     }
 
     override fun getItemCount(): Int = contacts.size
