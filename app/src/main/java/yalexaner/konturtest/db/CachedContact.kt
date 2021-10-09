@@ -12,7 +12,7 @@ data class CachedContact(
     @ColumnInfo(name = "phone") val phone: String,
     @ColumnInfo(name = "height") val height: Float,
     @ColumnInfo(name = "biography") val biography: String,
-    @ColumnInfo(name = "temperament") val temperament: Int,
+    @ColumnInfo(name = "temperament") val temperament: String,
     @ColumnInfo(name = "education_period_start") val educationPeriodStart: String,
     @ColumnInfo(name = "education_period_end") val educationPeriodEnd: String
 ) : Contact
