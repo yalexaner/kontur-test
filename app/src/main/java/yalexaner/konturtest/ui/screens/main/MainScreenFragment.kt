@@ -43,8 +43,10 @@ class MainScreenFragment : Fragment() {
         }
 
         model.requestErrorMessage.observe(viewLifecycleOwner) { message ->
-            showSnackbar(message)
+            handleErrorMessage(message)
         }
+
+        binding?.refresher?.setOnRefreshListener { model.requestContacts() }
     }
 
     private fun handleContactsLoaded(contacts: List<CachedContact>) {
@@ -53,8 +55,8 @@ class MainScreenFragment : Fragment() {
             onItemClick = ::onItemClick
         )
 
-        binding?.progress?.visibility = View.GONE
-        binding?.contacts?.visibility = View.VISIBLE
+        showContent()
+        hideRefresher()
     }
 
     private fun onItemClick(contact: CachedContact) {
@@ -64,9 +66,23 @@ class MainScreenFragment : Fragment() {
         }
     }
 
+    private fun handleErrorMessage(message: String) {
+        hideRefresher()
+        showSnackbar(message)
+    }
+
     private fun showSnackbar(message: String) {
         val layout = binding?.root ?: return
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showContent() {
+        binding?.progress?.visibility = View.GONE
+        binding?.contacts?.visibility = View.VISIBLE
+    }
+
+    private fun hideRefresher() {
+        binding?.refresher?.isRefreshing = false
     }
 
     override fun onDestroyView() {

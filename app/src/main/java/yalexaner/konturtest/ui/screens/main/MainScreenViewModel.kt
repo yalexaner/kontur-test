@@ -34,11 +34,11 @@ class MainScreenViewModel @Inject constructor(
         val currentTime = System.currentTimeMillis()
         val lastSavedTime = mainScreenSettings.lastCachedTimeMillis
         if (currentTime - lastSavedTime >= MINUTE) {
-            receiveContacts()
+            requestContacts()
         }
     }
 
-    private fun receiveContacts() {
+    fun requestContacts() {
         mainScreenRepo.getContacts()
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.main)
