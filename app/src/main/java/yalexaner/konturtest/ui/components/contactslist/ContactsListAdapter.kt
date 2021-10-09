@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import yalexaner.konturtest.databinding.ItemContactBinding
-import yalexaner.konturtest.network.models.Contact
+import yalexaner.konturtest.network.models.NetworkContact
 
 class MyItemRecyclerViewAdapter(
-    private val contacts: List<Contact>
+    private val contacts: List<NetworkContact>
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

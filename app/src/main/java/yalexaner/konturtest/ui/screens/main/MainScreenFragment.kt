@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import yalexaner.konturtest.databinding.FragmentMainScreenBinding
-import yalexaner.konturtest.network.models.Contact
+import yalexaner.konturtest.network.models.NetworkContact
 import yalexaner.konturtest.ui.components.contactslist.MyItemRecyclerViewAdapter
 
 /**
@@ -37,7 +37,7 @@ class MainScreenFragment : Fragment() {
         }
     }
 
-    private fun handleContactsLoaded(contacts: List<Contact>) {
+    private fun handleContactsLoaded(contacts: List<NetworkContact>) {
         binding?.contacts?.adapter = MyItemRecyclerViewAdapter(contacts)
         binding?.progress?.visibility = View.GONE
         binding?.contacts?.visibility = View.VISIBLE

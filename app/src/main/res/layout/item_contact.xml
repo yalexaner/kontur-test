@@ -7,7 +7,7 @@
 
         <variable
             name="contact"
-            type="yalexaner.konturtest.network.models.Contact" />
+            type="yalexaner.konturtest.network.models.NetworkContact" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

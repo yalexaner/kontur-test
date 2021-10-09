@@ -1,12 +1,12 @@
 package yalexaner.konturtest.network.repos
 
 import rx.Single
-import yalexaner.konturtest.network.models.Contact
+import yalexaner.konturtest.network.models.NetworkContact
 
 interface MainScreenRepo {
 
     /**
-     * Загружает [контакты][Contact] из трёх источников и конкатенирует их в один лист
+     * Загружает [контакты][NetworkContact] из трёх источников и конкатенирует их в один лист
      */
-    fun getContacts(): Single<List<Contact>>
+    fun getContacts(): Single<List<NetworkContact>>
 }
